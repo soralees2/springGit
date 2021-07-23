@@ -14,12 +14,12 @@
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<style>
-.container {
+.joinbox {
 	border: 1px solid #ddd;
 	max-width: 700px;
 }
 
-h2 {
+.joinhi {
 	text-align: center;
 	margin-bottom: 45px;
 }
@@ -42,8 +42,8 @@ div[class*="col-"] span {
 </style>
 </head>
 <body>
-		<div class="container p-5 mt-5 shadow bg-white rounded">
-		<h2>회원가입</h2>
+		<div class="container joinbox p-5 mt-5 shadow bg-white rounded">
+		<h2 class="joinhi">회원가입</h2>
 		<form action="/member/join"
 			method="post" id="checkForm">
 			<div class="form-row align-items-center">
