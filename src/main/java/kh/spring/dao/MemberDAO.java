@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.spring.dto.MemberDTO;
+
 @Repository
 public class MemberDAO {
 	
@@ -14,5 +16,12 @@ public class MemberDAO {
 		String sql = "select count(*) from member where id=? and pw=?";
 		return jdbc.queryForObject(sql, Integer.class,id,pw);
 	}
-
+	public int idCheck(String id) {
+		String sql="select count(*) from member where id=?";
+		return jdbc.queryForObject(sql, Integer.class,id);
+	}
+	public int join(MemberDTO dto) {
+		String sql="insert into member values(?,?,?,?,?,?,?,?,sysdate)";
+		return jdbc.update(sql, dto.getId(),dto.getPw(),dto.getName())
+	}
 }
