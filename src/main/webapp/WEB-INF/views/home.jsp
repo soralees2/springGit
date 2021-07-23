@@ -9,6 +9,18 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+<script>
+$(function(){
+$("#toboard").on("click",function(){
+	 location.href="/board/boardmain";
+
+})
+});
+
+
+</script>
+
 </head>
 <body>
 	<div class="loginBox p-4 shadow bg-white rounded">
@@ -29,8 +41,14 @@
 				<div class="col-6 text-center">
 					<button type="button" class="btn btn-outline-primary w-100" id="signup">회원가입</button>
 				</div>
+				<div class="col-6 text-center">
+					<button type="button" class="btn btn-outline-primary w-100" id="toboard">게시판</button>
+				</div>
 			</div>
 		</form>
 	</div>
 </body>
+ 	
+
+
 </html>
