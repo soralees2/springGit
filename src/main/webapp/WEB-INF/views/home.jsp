@@ -10,13 +10,24 @@
 <link rel="stylesheet" href="/css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
-	$(function(){
-		$("#signup").on("click", function(){
-			location.href="/member/signup";
+	$(function() {
+		$("#signup").on("click", function() {
+			location.href = "/member/signup";
 		})
-		$("#logout").on("click", function(){
-			location.href="/member/logout";
+		$("#logout").on("click", function() {
+			location.href = "/member/logout";
 		})
+
+		$("#mypage").on("click", function() {
+			location.href = "/member/mypage";
+		})
+		$("#memberout").on("click", function() {
+			let result = confirm("정말 탈퇴하시겠습니까?");
+			if (result) {
+				location.href = "/member/memberout";
+			}
+		})
+
 	})
 </script>
 </head>
@@ -50,7 +61,9 @@
 				<h2>환영합니다 <strong>${loginID}</strong> 님!</h2>
 				<p>원하시는 기능을 선택해 주세요:)</p>
 				<ul>
+					<button id="mypage" class="btn btn-success">마이페이지</button>
 					<button id="logout" class="btn btn-warning">로그아웃</button>
+					<button id="memberout" class="btn btn-danger">회원탈퇴</button>
 				</ul>
 			</div>
 		</c:otherwise>
