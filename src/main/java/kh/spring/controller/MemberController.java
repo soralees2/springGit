@@ -73,7 +73,7 @@ public class MemberController {
 		int result = dao.idCheck(id);
 		return String.valueOf(result);
 	}
-	@RequestMapping("join")
+	@RequestMapping(value="join" ,produces="text/html;charset=utf8")
 	public String join(HttpServletRequest request) {
 		String id=request.getParameter("id");
 		String pw= request.getParameter("inp_pw01");
