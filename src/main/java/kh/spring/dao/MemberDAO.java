@@ -51,5 +51,14 @@ public class MemberDAO {
 		return jdbc.update("delete from member where id = ?",id);
 	}
 	
-
+	public int idCheck(String id) {
+		String sql="select count(*) from member where id=?";
+		return jdbc.queryForObject(sql, Integer.class,id);
+	}
+	public int join(MemberDTO dto) {
+		String sql="insert into member values(?,?,?,?,?,?,?,?,sysdate)";
+		return jdbc.update(sql, dto.getId(),
+				dto.getPw(),dto.getName(),dto.getPhone(),
+				dto.getEmail(),dto.getZipcode(),dto.getAddress1(),dto.getAddress2());
+	}
 }

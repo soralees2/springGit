@@ -13,11 +13,38 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<style>
+.joinbox {
+	border: 1px solid #ddd;
+	max-width: 700px;
+}
+
+.joinhi {
+	text-align: center;
+	margin-bottom: 45px;
+}
+
+input, button, select {
+	font-size: 0.9rem !important;
+}
+
+div[class*="col-"] span {
+	font-size: 13px;
+}
+
+.form-row:last-of-type input {
+	font-weight: bold;
+}
+
+.pw-check span {
+	display: none;
+}
+</style>
 </head>
 <body>
-		<div class="container p-5 mt-5 shadow bg-white rounded">
-		<h2>회원가입</h2>
-		<form action="${pageContext.request.contextPath}/joinView.mem"
+		<div class="container joinbox p-5 mt-5 shadow bg-white rounded">
+		<h2 class="joinhi">회원가입</h2>
+		<form action="/member/join"
 			method="post" id="checkForm">
 			<div class="form-row align-items-center">
 				<div class="col-12 col-sm-2 mb-2">
@@ -150,17 +177,14 @@
 					let resultId = idReg.test(idInput.value);
 					if (resultId) {
 						$.ajax({
-							url:"${pageContext.request.contextPath}/idcheck.mem",
-							type:"GET",
-							data :"id="+$("#id").val(),
-							contentType:"text/plain;charset=uft-8",
-							dataType:"text"
-						}).done(function(data){
-							if(data==="use"){// 아이디 이미 존재
+							url:"/member/idCheck",
+							data:{id:$("#id").val()}
+							}).done(function(data){
+							if(data==="1"){// 아이디 이미 존재
 								alert("이미 사용중인 아이디입니다.");
 								
 							}else{
-								var idUse = confirm("사용 가능한 아이디입니다.");
+								var idUse = confirm("사용 가능한 아이디입니다. 사용하시겠습니까?");
 								if(idUse){
 								isIdCheck = true;
 																							
@@ -176,9 +200,86 @@
 			isIdCheck = false;
 		})
 	$("#back").on("click",function(){
-		location.href="${pageContext.request.contextPath}/index.jsp";
+		location.href="/";
 	})
 	})
+	
+	
+	document.getElementById("inp_pw02").onkeyup = function() {
+			let chkPW = document.getElementById("inp_pw01").value;
+			if (chkPW === this.value) {
+				document.getElementById("pw-success").setAttribute("style",
+						"display:block");
+				document.getElementById("pw-danger").setAttribute("style",
+						"display:none");
+			} else {
+				document.getElementById("pw-success").setAttribute("style",
+						"display:none");
+				document.getElementById("pw-danger").setAttribute("style",
+						"display:block");
+
+			}
+		}
+
+		document.getElementById("search").onclick = function() {
+			new daum.Postcode({
+				oncomplete : function(data) {
+					let roadAddr = data.roadAddress;
+
+					document.getElementById('postcode').value = data.zonecode;
+					document.getElementById("address1").value = roadAddr;
+				}
+			}).open();
+		};
+
+		let idInput = document.getElementById("id");
+		let pwInput = document.getElementById("inp_pw01");
+		let nameInput = document.getElementById("name");
+		let phone1Input = document.getElementById("phone1");
+		let phone2Input = document.getElementById("phone2");
+
+		let idReg = /^[a-z0-9]{5,20}$/;
+		let pwReg = /^[^ㄱ-ㅎ]\S{8,16}$/;
+		let nameRegex = /^[가-힣A-Za-z]+$/;
+
+		let phone1Reg = /^\d{3,4}$/;
+		let phone2Reg = /^\d{4}$/;
+
+		let check = document.getElementById("checkForm");
+
+		document.getElementById("send").onclick = function() {
+
+			let resultId = idReg.test(idInput.value);
+			resultId.addClassName
+			let resultPw = pwReg.test(pwInput.value);
+			let resultName = nameRegex.test(nameInput.value);
+
+			let resultPhone1 = phone1Reg.test(phone1Input.value);
+			let resultPhone2 = phone2Reg.test(phone2Input.value);
+
+			if (!resultId) {
+				alert("아이디는 5-20자의 영문 소문자,숫자만 사용 가능합니다.");
+				return;
+			}
+			if (!resultPw) {
+				alert("비밀번호는 8-16자 영문 대,소문자,숫자와 특수기호를 사용하세요.");
+				return;
+			}
+			if (!resultName) {
+				alert("이름은 한글과 영문 대,소문자를 사용하세요.(특수기호,공백 사용 불가)");
+				return;
+			}
+			if (!resultPhone1 || !resultPhone2) {
+				alert("전화번호를 정확히 입력해주세요.");
+				return;
+			}
+			if (isIdCheck == false) {
+				alert("아이디 중복체크를 해주세요!");
+				return;
+			}
+
+			document.getElementById("checkForm").submit();
+		};
 </script>
 </body>
 </html>
