@@ -1,13 +1,16 @@
 package kh.spring.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kh.spring.dao.MemberDAO;
+import kh.spring.dto.MemberDTO;
 
 @Controller
 @RequestMapping("/member")
@@ -42,5 +45,18 @@ public class MemberController {
 	public String idCheck(String id) {
 		int result = dao.idCheck(id);
 		return String.valueOf(result);
+	}
+	@RequestMapping("join")
+	public String join(HttpServletRequest request) {
+		String id=request.getParameter("id");
+		String pw= request.getParameter("inp_pw01");
+		String name= request.getParameter("name");
+		String phone= request.getParameter("phone")+request.getParameter("phone1")+request.getParameter("phone2");
+		String email=request.getParameter("email");
+		String zipcode=request.getParameter("zipcode");
+		String address1=request.getParameter("address1");
+		String address2=request.getParameter("address2");
+		dao.join(new MemberDTO(id,pw,name,phone,email,zipcode,address1,address2,null));
+		return "redirect:/";
 	}
 }
