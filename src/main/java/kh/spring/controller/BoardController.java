@@ -1,49 +1,66 @@
 package kh.spring.controller;
 
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kh.spring.dao.BoardDAO;
 import kh.spring.dto.BoardDTO;
 
-
-@Controller
+@Component
 @RequestMapping("/board")
-
 public class BoardController {
-	
-	@Autowired
-	private BoardDAO dao;
+   
+   @Autowired
+   private BoardDAO dao;
+   
+   @Autowired HttpSession session;
+   
+   @RequestMapping("boardMain")
+      public String boardMain(Model model) {
+      List<BoardDTO> list = dao.selectAll();
+      model.addAttribute("list", list);//return시에 데이터를 알아서 가지고감
+      
+         return "board/boardMain";
+      }
+   
+   @RequestMapping("boardWrite")
+      public String boardWrite() {
+      
+      return "board/boardWrite";
+   }
+   
+   
+   
+  
+   @RequestMapping("boardWriteProc")
+   public String writeContents(String title, String contents) throws Exception {
+      
+      System.out.println(title);
+      System.out.println(contents);
+      
+      
+      String id = (String)session.getAttribute("loginID");
+      dao.contentWrite(title,contents,id);
+      return "redirect:boardMain";
 
-	@Autowired
-	private HttpSession session; //세션유지
-	
-	
-	@RequestMapping("boardmain")
-	public String boardmain() {
-		
-		return "board/boardmain";
-	}
-	
-	
-	@RequestMapping("write")
-	public String write() {
-		
-		return "board/write";
-	}
-	
-	@RequestMapping("writeContents")
-	   public String writeContents(int seq,String title, String contents) throws Exception {
-	      
-	      
-	      MemberDTO dto = (MemberDTO)session.getAttribute("login");
-	      dao.contentWrite(seq,title,contents,dto.getId());
-	      return "board/boardList";
+   }
+   
+   @RequestMapping("boardDetail")
+   public String boardDetail(Model model) {
+   
+   
+   return "board/boardDetail";
+}
 
-	   }
-	
+   
+   
+
+
+
 }

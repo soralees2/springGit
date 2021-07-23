@@ -17,6 +17,9 @@ local.properties
 .classpath
 .project
 
+# ignore properties file
+config.properties
+
 # External tool builders
 .externalToolBuilders/
 
