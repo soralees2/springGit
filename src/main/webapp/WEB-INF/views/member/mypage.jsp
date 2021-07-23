@@ -21,41 +21,27 @@
 </style>
 <script>
 	$(function() {
-		$.ajax({
-			url:"${pageContext.request.contextPath}/page.mem", type:"get", dataType:"json"
-		}).done(function(resp){
-			console.log(resp);
-			console.log(resp.id);
-			$("#divId").text(resp.id);
-			$("#divName").text(resp.name);
-			$("#divContact").text(resp.contact);
-			$("#divEmail").text(resp.email);
-			$("#divPostcode").text(resp.postcode);
-			$("#divAddress1").text(resp.address1);
-			$("#divAddress2").text(resp.address2);
-		});
-
 		$("#back").on("click", function() {
-			location.href = "/index.jsp";
+			location.href = "/";
 		})
 		
 		$("#nameBtn").on("click",function(){
 			$("#divName").attr("contenteditable","true");
 			$("#divName").focus();
 		})
-		$("#contactBtn").on("click",function(){
-			$("#divContact").attr("contenteditable","true");
-			$("#divContact").focus();
+		$("#phoneBtn").on("click",function(){
+			$("#divPhone").attr("contenteditable","true");
+			$("#divPhone").focus();
 		})
 		$("#emailBtn").on("click",function(){
 			$("#divEmail").attr("contenteditable","true");
 			$("#divEmail").focus();
 		})
-		$("#postcodeBtn").on("click",function(){
+		$("#zipcodeBtn").on("click",function(){
 			new daum.Postcode({
 	        	oncomplete: function (data) {
 	        		var roadAddr = data.roadAddress;
-	        		$("#divPostcode").text(data.zonecode);
+	        		$("#divZipcode").text(data.zonecode);
 	        		$("#divAddress1").text(roadAddr);
 	        	}
 			}).open();
@@ -68,9 +54,9 @@
 		$("#frm").on("submit",function(){
 			$("#id").val($("#divId").text());
 			$("#name").val($("#divName").text());
-			$("#contact").val($("#divContact").text());
+			$("#phone").val($("#divPhone").text());
 			$("#email").val($("#divEmail").text());
-			$("#postcode").val($("#divPostcode").text());
+			$("#zipcode").val($("#divZipcode").text());
 			$("#address1").val($("#divAddress1").text());
 			$("#address2").val($("#divAddress2").text());
 		})
@@ -81,7 +67,7 @@
 </script>
 </head>
 <body>
-	<form action="${pageContext.request.contextPath}/modifyInfo.mem" method="post" id="frm">
+	<form action="member/modifyInfo" method="post" id="frm">
 	<div class="card border-secondary mb-3" id="container" style="width: 35rem;">
 		<div class="card-body text-secondary">
 			<h5 class="card-title" id="title">${login.name}님의 정보관리</h5>
@@ -91,69 +77,55 @@
 				<div class="card-body text-secondary" id="comm">
 					ID  :
 				</div>
-				<div class="info" id="divId">
-					<!-- ${login.id} -->
-				</div>
+				<div class="info" id="divId">${login.id}</div>
 			</li>
 			<li class="list-group-item">
 				<div class="card-body text-secondary" id="comm">
 					NAME  :
 				</div>
-				<div class="info" id="divName">
-					<!-- ${login.name} -->
-				</div>
+				<div class="info" id="divName">${login.name}</div>
 				<div class="btns">
 					<button type="button" id="nameBtn" class="btn btn-outline-info btn-sm">수정</button>
 				</div>
 			</li>
 			<li class="list-group-item">
 				<div class="card-body text-secondary" id="comm">
-					CONTACT  :
+					PHONE  :
 				</div>
-				<div class="info" id="divContact">
-					<!-- ${login.contact} -->
-				</div>
+				<div class="info" id="divPhone">${login.phone}</div>
 				<div class="btns">
-					<button type="button" id="contactBtn" class="btn btn-outline-info btn-sm">수정</button>
+					<button type="button" id="phoneBtn" class="btn btn-outline-info btn-sm">수정</button>
 				</div>
 			</li>
 			<li class="list-group-item">
 				<div class="card-body text-secondary" id="comm">
 					EMAIL  :
 				</div>
-				<div class="info" id="divEmail">
-					<!-- ${login.email} -->
-				</div>
+				<div class="info" id="divEmail">${login.email}</div>
 				<div class="btns">
 					<button type="button" id="emailBtn" class="btn btn-outline-info btn-sm">수정</button>
 				</div>
 			</li>
 			<li class="list-group-item">
 				<div class="card-body text-secondary" id="comm">
-					POSTCODE  :
+					ZIPCODE  :
 				</div>
-				<div class="info" id="divPostcode">
-					<!-- ${login.postcode} -->
-				</div>
+				<div class="info" id="divZipcode">${login.zipcode}</div>
 				<div class="btns">
-					<button type="button" id="postcodeBtn" class="btn btn-outline-info btn-sm">수정</button>
+					<button type="button" id="zipcodeBtn" class="btn btn-outline-info btn-sm">수정</button>
 				</div>
 			</li>
 			<li class="list-group-item">
 				<div class="card-body text-secondary" id="comm">
 					ADDRESS1  :
 				</div>
-				<div class="info" id="divAddress1">
-					<!-- ${login.address1} -->
-				</div>
+				<div class="info" id="divAddress1">${login.address1}</div>
 			</li>
 			<li class="list-group-item">
 				<div class="card-body text-secondary" id="comm">
 					ADDRESS2  :
 				</div>
-				<div class="info" id="divAddress2">
-					<!-- ${login.address2} -->
-				</div>
+				<div class="info" id="divAddress2">${login.address2}</div>
 				<div class="btns">
 					<button type="button" id="address2Btn" class="btn btn-outline-info btn-sm">수정</button>
 				</div>
@@ -166,9 +138,9 @@
 	</div>
 	<input type=hidden id=id name=id value="${login.id}">
 	<input type=hidden id=name name=name value="${login.name}">
-	<input type=hidden id=contact name=contact value="${login.contact}">
+	<input type=hidden id=phone name=phone value="${login.phone}">
 	<input type=hidden id=email name=email value="${login.email}">
-	<input type=hidden id=postcode name=postcode value="${login.postcode}">
+	<input type=hidden id=zipcode name=zipcode value="${login.zipcode}">
 	<input type=hidden id=address1 name=address1 value="${login.address1}">
 	<input type=hidden id=address2 name=address2 value="${login.address2}">
 	</form>

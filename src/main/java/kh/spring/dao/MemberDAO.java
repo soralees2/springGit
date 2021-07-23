@@ -42,4 +42,14 @@ public class MemberDAO {
 	}
 	
 
+	public int update(MemberDTO dto) throws Exception{ // 내 정보 수정
+		String sql = "update member set name=?, phone=?, email=?, zipcode=?, address1=?, address2=? where id=?";
+		return jdbc.update(sql, dto.getName(), dto.getPhone(), dto.getEmail(), dto.getZipcode(), dto.getAddress1(), dto.getAddress2());
+	}
+	
+	public int memberOut(String id) throws Exception{ // 탈퇴
+		return jdbc.update("delete from member where id = ?",id);
+	}
+	
+
 }
