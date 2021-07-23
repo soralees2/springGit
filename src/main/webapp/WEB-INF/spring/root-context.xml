@@ -10,6 +10,7 @@
 	<context:property-placeholder location="/config/config.properties" />
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
+
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="username" value="${spring.datasource.username}" />
 		<property name="password" value="${spring.datasource.password}" />
@@ -20,6 +21,7 @@
 	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource"></property>
+
 	</bean>
 
 </beans>
