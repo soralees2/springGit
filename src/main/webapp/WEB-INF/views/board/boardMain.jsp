@@ -60,8 +60,8 @@
             <c:forEach var="item" items="${list}">
                <tr align="center">
                   <td width="5%">${item.seq}</td>
-                  <%-- ${pageContext.request.contextPath}/view.bod?seq=${list.seq} --%>
-                  <td width="30%" class="text-left"><a href="boardDetail?seq=${item.seq}">${item.title}</a></td>
+                
+                  <td width="30%" class="text-left"><a href="/board/boardDetail?seq=${item.seq}">${item.title}</a></td>
                   <td width="15%">${item.contents}</td>
                   <td width="15%">${item.writer}</td>
                   <td width="10%">${item.write_date}</td>
@@ -72,7 +72,7 @@
          <tfoot>
             <tr>
                <td colspan="5">
-                  <a href="index.jsp" class="btn btn-secondary float-left">메인으로</a>               
+                  <a href="/" class="btn btn-secondary float-left">메인으로</a>               
                   <input type="button" id="btn_write" class="btn btn-primary float-right" value="글 쓰기">
                </td>
             </tr>
