@@ -80,38 +80,54 @@
 </head>
 
 <body>
+    <form action="" method="get" id="frm">
    <div class="container">
       <h2 class="text-center mb-3">자유게시판 글 보기</h2>
       <div class="contents_box">
+          <c:forEach var="view" items="${view}">
          <div class="title">
-            <%-- <span class="seq">${cnt.seq}</span> --%>
-            <h3>${cnt.title}</h3>
+             <span class="seq">${view.seq}<input type="hidden" name="seq" value="${view.seq}"></span> 
+            <h3>${view.title}</h3>
             
             <ul>
-               <li class="view_cnt">${cnt.writer}</li>
-               <li class="write_date">${cnt.write_date}</li>
-               <li class="view_cnt">${cnt.view_count}</li>
+               <li class="view_cnt">${view.writer}</li>
+               <li class="write_date">${view.write_date}</li>
+               
             </ul>
                   
          </div>
          
          <div class="contents">
-            <p>${cnt.contents}</p>
+            <p>${view.contents}</p>
          </div>
          <div class="btn_wrap text-right">
             <c:choose>
-               <c:when test="${login.id == cnt.writer}">
-                  <a href="boardModiForm.board?id=${cnt.seq}"
-                     class="btn btn-primary">수정하기</a>
-                  <a href="${pageContext.request.contextPath}/boardDelete.board?id=${cnt.seq}"
-                     class="btn btn-danger">삭제하기</a>
+        
+               <c:when test="${loginID == view.writer}">
+                  <input type="button" id="edit" value="수정하기"
+                     class="btn btn-primary">
+                  <input type="button" id="del" value="삭제하기"
+                     class="btn btn-danger">
+                     
                </c:when>
+            
             </c:choose>
-            <a href="${pageContext.request.contextPath}/boardList.board?cpage=1" class="btn btn-secondary">목록으로</a>
+            <a href="/board/boardMain" class="btn btn-secondary float-left">목록으로</a>
          </div>
+         </c:forEach>
       </div>
    </div>
+    </form>
+<script>
+$("#del").on("click",function(){
+	$("#frm").attr("action","boardDelete").submit();
+})
 
+$("#edit").on("click",function(){
+	$("#frm").attr("action","boardEdit").submit();
+})
+
+</script>
 </body>
 
 </html>

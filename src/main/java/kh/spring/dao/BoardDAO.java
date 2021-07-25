@@ -14,33 +14,63 @@ import kh.spring.dto.BoardDTO;
 @Repository
 public class BoardDAO {
 
-   @Autowired
-   private JdbcTemplate jdbc;
+	@Autowired
+	private JdbcTemplate jdbc;
 
 
-   // 게시판에 글쓰기
-   public int contentWrite(String title, String contents, String id) throws Exception {
-      String sql = "insert into board2 values(board2_seq.nextval, ?, ?, ?, sysdate)";
-      return jdbc.update(sql,title,contents,id);
-            
-   }
+	// 게시판에 글쓰기
+	public int contentWrite(String title, String contents, String id) throws Exception {
+		String sql = "insert into board2 values(board2_seq.nextval, ?, ?, ?, sysdate)";
+		return jdbc.update(sql,title,contents,id);
+
+	}
 
 
-   public List<BoardDTO> selectAll() {
-      String sql = "select * from board2";
-      return jdbc.query(sql,new RowMapper<BoardDTO>(){
-         @Override
-         public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-            BoardDTO dto = new BoardDTO();
-            dto.setSeq(rs.getInt("seq"));
-            dto.setTitle(rs.getString("title"));
-            dto.setContents(rs.getString("contents"));
-            dto.setWriter(rs.getString("writer"));
-            dto.setWrite_date(rs.getDate("write_date"));
-            return dto;
+	public List<BoardDTO> selectAll() {
+		String sql = "select * from board2";
+		return jdbc.query(sql,new RowMapper<BoardDTO>(){
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO dto = new BoardDTO();
+				dto.setSeq(rs.getInt("seq"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContents(rs.getString("contents"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setWrite_date(rs.getDate("write_date"));
+				return dto;
 
-         }
-      });
-   }
-   
+			}
+		});
+	}
+
+
+	public List<BoardDTO> selectView(int seq) {
+		String sql = "select * from board2 where seq=? order by seq";
+		return jdbc.query(sql, new RowMapper<BoardDTO>(){
+			@Override
+			public BoardDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				BoardDTO dto = new BoardDTO();
+				dto.setSeq(rs.getInt("seq"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContents(rs.getString("contents"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setWrite_date(rs.getDate("write_date"));
+				return dto;
+			}
+
+		},seq);
+
+	}
+	
+	public int boardDelete(int seq) {
+		String sql = "delete from board2 where seq=?";
+		return jdbc.update(sql, seq);
+	}
+	
+	public int boardEdit(int seq, String title, String contents) {
+		String sql = "update board2 set title=?, contents=? where seq=?";
+		return jdbc.update(sql,title,contents,seq);
+	}
+	
+	
 }
